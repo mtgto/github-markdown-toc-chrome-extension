@@ -1,0 +1,8 @@
+node_modules/
+typings/
+bower_components/
+
+# Application
+src/js/
+app/
+
