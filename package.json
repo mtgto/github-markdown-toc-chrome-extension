@@ -10,6 +10,7 @@
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
     "gulp-header": "^1.2.2",
+    "gulp-jade": "^1.0.0",
     "gulp-sourcemaps": "^1.5.1",
     "gulp-streamify": "0.0.5",
     "gulp-typescript": "^2.5.0",

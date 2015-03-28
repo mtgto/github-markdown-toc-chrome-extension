@@ -7,6 +7,7 @@ streamify = require 'gulp-streamify'
 header = require 'gulp-header'
 concat = require 'gulp-concat'
 sourcemaps = require 'gulp-sourcemaps'
+jade = require 'gulp-jade'
 
 gulp.task 'typescript', ->
   result = gulp.src 'src/**/*.ts'
@@ -18,17 +19,30 @@ gulp.task 'typescript', ->
     .pipe sourcemaps.write()
     .pipe gulp.dest 'src/js'
 
-gulp.task 'debug-build', ['typescript'], ->
+gulp.task 'jade', ->
+  gulp.src 'src/jade/*.jade'
+    .pipe jade()
+    .pipe gulp.dest 'src/html'
+
+gulp.task 'debug-build', ['typescript', 'jade'], ->
   browserify entries: ['./src/js/main.js'], debug: true
     .bundle()
     .pipe source 'main.js'
     .pipe gulp.dest 'build/debug/js'
+  browserify entries: ['./src/js/options.js'], debug: true
+    .bundle()
+    .pipe source 'options.js'
+    .pipe gulp.dest 'build/debug/js'
   gulp.src ['bower_components/jquery/dist/jquery.min.js']
     .pipe gulp.dest 'build/debug/js'
+  gulp.src ['bower_components/primer-css/css/primer.css']
+    .pipe gulp.dest 'build/debug/css'
+  gulp.src ['./src/html/*.html']
+    .pipe gulp.dest 'build/debug/html'
   gulp.src ['src/manifest.json']
     .pipe gulp.dest 'build/debug'
 
-gulp.task 'release-build', ['typescript'], ->
+gulp.task 'release-build', ['typescript', 'jade'], ->
   pkg = require('./package.json')
   banner = ['/**',
             ' * <%= pkg.name %> - <%= pkg.description %>',
@@ -43,8 +57,18 @@ gulp.task 'release-build', ['typescript'], ->
     .pipe streamify uglify()
     .pipe header banner, pkg: pkg
     .pipe gulp.dest 'build/release/js'
+  browserify ['./src/js/options.js']
+    .bundle()
+    .pipe source 'options.js'
+    .pipe streamify uglify()
+    .pipe header banner, pkg: pkg
+    .pipe gulp.dest 'build/release/js'
   gulp.src ['bower_components/jquery/dist/jquery.min.js']
     .pipe gulp.dest 'build/release/js'
+  gulp.src ['bower_components/primer-css/css/primer.css']
+    .pipe gulp.dest 'build/debug/css'
+  gulp.src ['./src/html/*.html']
+    .pipe gulp.dest 'build/debug/html'
   gulp.src ['src/manifest.json']
     .pipe gulp.dest 'build/release'
 

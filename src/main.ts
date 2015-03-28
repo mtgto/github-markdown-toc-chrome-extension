@@ -16,7 +16,11 @@
 
 /// <reference path="../typings/tsd.d.ts"/>
 
-(function(){
+chrome.storage.sync.get(function(items) {
+    var ignoredUrls: string[] = items['ignore_urls'] || [];
+    if (ignoredUrls.indexOf(document.URL) != -1) {
+        return;
+    }
     var article: JQuery = $('article.markdown-body').first();
     var baseList: JQuery = $('<ul/>');
     var lastLevel = 1;
@@ -27,6 +31,9 @@
             var tagName: string = element.tagName;
             var text: string = element.textContent.trim();
             var href: string = $(element).children('a.anchor').first().attr('href');
+            if (!href) {
+                return;
+            }
             var level: number = parseInt(tagName.charAt(1));
             var list: JQuery = lastList;
             if (lastLevel < level) {
@@ -52,8 +59,8 @@
     toggleAnchor.click(function() {
         shown = !shown;
         toggleAnchor.text(shown ? '[Click to hide table of contents]' : '[Click to show table of contents]');
-        baseList.toggle(shown);
+        baseList.toggle('fast');
     });
     article.prepend(baseList);
     article.prepend(toggleAnchor);
-})();
+});

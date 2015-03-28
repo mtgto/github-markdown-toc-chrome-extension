@@ -1,0 +1,18 @@
+doctype html
+html
+    head
+        title GitHub markdown ToC Options
+        link(rel='stylesheet' href='../css/primer.css' type='text/css')
+        script(type='text/javascript' src='../js/jquery.min.js')
+        script(type='text/javascript' src='../js/options.js')
+    body
+        div.container
+            h1 GitHub markdown ToC Options
+            form
+                dl.form
+                    dt
+                        label ignoring URLs
+                    dd
+                        textarea(cols='100', rows='20', id='textarea')
+                div.form-actions
+                    button.btn.btn-primary(type='button' id='save') Save

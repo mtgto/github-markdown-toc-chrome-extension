@@ -4,5 +4,6 @@ bower_components/
 
 # Application
 src/js/
+src/html/
 build/
 

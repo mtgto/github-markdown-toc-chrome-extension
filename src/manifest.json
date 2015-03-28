@@ -4,6 +4,7 @@
   "name": "GitHub markdown ToC",
   "description": "Generate toc of github markdown automatically",
   "version": "1.0",
+  "homepage_url": "https://github.com/mtgto/github-markdown-toc-chrome-extension",
 
   "content_scripts": [
     {
@@ -11,8 +12,8 @@
       "js": ["js/jquery.min.js", "js/main.js"]
     }
   ],
+  "options_page": "html/options.html",
   "permissions": [
-    "activeTab",
-    "https://ajax.googleapis.com/"
+    "storage"
   ]
 }
