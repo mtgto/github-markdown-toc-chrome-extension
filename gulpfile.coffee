@@ -5,15 +5,30 @@ source = require 'vinyl-source-stream'
 uglify = require 'gulp-uglify'
 streamify = require 'gulp-streamify'
 header = require 'gulp-header'
+concat = require 'gulp-concat'
+sourcemaps = require 'gulp-sourcemaps'
 
 gulp.task 'typescript', ->
-  gulp.src 'src/**/*.ts'
-  .pipe ts {
-    module: 'commonjs'
-  }
-  .js.pipe gulp.dest 'src/js'
+  result = gulp.src 'src/**/*.ts'
+    .pipe sourcemaps.init()
+    .pipe ts {
+      module: 'commonjs'
+    }
+  return result.js
+    .pipe sourcemaps.write()
+    .pipe gulp.dest 'src/js'
 
-gulp.task 'build', ['typescript'], ->
+gulp.task 'debug-build', ['typescript'], ->
+  browserify entries: ['./src/js/main.js'], debug: true
+    .bundle()
+    .pipe source 'main.js'
+    .pipe gulp.dest 'build/debug/js'
+  gulp.src ['bower_components/jquery/dist/jquery.min.js']
+    .pipe gulp.dest 'build/debug/js'
+  gulp.src ['src/manifest.json']
+    .pipe gulp.dest 'build/debug'
+
+gulp.task 'release-build', ['typescript'], ->
   pkg = require('./package.json')
   banner = ['/**',
             ' * <%= pkg.name %> - <%= pkg.description %>',
@@ -27,11 +42,11 @@ gulp.task 'build', ['typescript'], ->
     .pipe source 'main.js'
     .pipe streamify uglify()
     .pipe header banner, pkg: pkg
-    .pipe gulp.dest 'app/js'
-  gulp.src ['src/js/*.js', 'bower_components/jquery/dist/jquery.min.js']
-    .pipe gulp.dest 'app/js'
+    .pipe gulp.dest 'build/release/js'
+  gulp.src ['bower_components/jquery/dist/jquery.min.js']
+    .pipe gulp.dest 'build/release/js'
   gulp.src ['src/manifest.json']
-    .pipe gulp.dest 'app'
+    .pipe gulp.dest 'build/release'
 
 gulp.task 'watch', ['typescript'], ->
   gulp.watch 'src/**/*.ts', ['typescript']

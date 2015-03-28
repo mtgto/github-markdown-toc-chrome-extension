@@ -17,6 +17,43 @@
 /// <reference path="../typings/tsd.d.ts"/>
 
 (function(){
-    console.log($('article.markdown-body'));
-    console.log("launched");
+    var article: JQuery = $('article.markdown-body').first();
+    var baseList: JQuery = $('<ul/>');
+    var lastLevel = 1;
+    var lastList = baseList;
+    article
+        .children('h1,h2,h3,h4,h5,h6,h7')
+        .each(function(index: number, element: Element) {
+            var tagName: string = element.tagName;
+            var text: string = element.textContent.trim();
+            var href: string = $(element).children('a.anchor').first().attr('href');
+            var level: number = parseInt(tagName.charAt(1));
+            var list: JQuery = lastList;
+            if (lastLevel < level) {
+                for (var i=lastLevel; i<level; i++) {
+                    var newList: JQuery = $('<ul/>');
+                    list.append(newList);
+                    list = newList;
+                }
+            } else if (lastLevel > level) {
+                for (var i=level; i<lastLevel; i++) {
+                    list = list.parent();
+                }
+            }
+            var item: JQuery = $('<li/>');
+            var anchor: JQuery = $('<a/>');
+            anchor.text(text);
+            anchor.attr('href', href);
+            item.append(anchor);
+            list.append(item);
+        });
+    var toggleAnchor: JQuery = $('<a href="#">[Click to hide table of contents]</a>');
+    var shown: boolean = true;
+    toggleAnchor.click(function() {
+        shown = !shown;
+        toggleAnchor.text(shown ? '[Click to hide table of contents]' : '[Click to show table of contents]');
+        baseList.toggle(shown);
+    });
+    article.prepend(baseList);
+    article.prepend(toggleAnchor);
 })();

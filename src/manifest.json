@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
 
-  "name": "github-markdown-toc-chrome-extension",
+  "name": "GitHub markdown ToC",
   "description": "Generate toc of github markdown automatically",
   "version": "1.0",
 
