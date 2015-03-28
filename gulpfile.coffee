@@ -39,7 +39,7 @@ gulp.task 'debug-build', ['typescript', 'jade'], ->
     .pipe gulp.dest 'build/debug/css'
   gulp.src ['./src/html/*.html']
     .pipe gulp.dest 'build/debug/html'
-  gulp.src ['src/manifest.json']
+  gulp.src ['src/manifest.json', 'src/icon_128.png']
     .pipe gulp.dest 'build/debug'
 
 gulp.task 'release-build', ['typescript', 'jade'], ->
@@ -66,10 +66,10 @@ gulp.task 'release-build', ['typescript', 'jade'], ->
   gulp.src ['bower_components/jquery/dist/jquery.min.js']
     .pipe gulp.dest 'build/release/js'
   gulp.src ['bower_components/primer-css/css/primer.css']
-    .pipe gulp.dest 'build/debug/css'
+    .pipe gulp.dest 'build/release/css'
   gulp.src ['./src/html/*.html']
-    .pipe gulp.dest 'build/debug/html'
-  gulp.src ['src/manifest.json']
+    .pipe gulp.dest 'build/release/html'
+  gulp.src ['src/manifest.json', 'src/icon_128.png']
     .pipe gulp.dest 'build/release'
 
 gulp.task 'watch', ['typescript'], ->
