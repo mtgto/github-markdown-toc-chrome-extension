@@ -19,7 +19,7 @@
 $(function(){
     $('#save').click(function () {
         var textarea: string = $('#textarea').val();
-        var matches = textarea.match(/^https:\/\/github.com\/\S+$/mg) || [];
+        var matches = textarea.match(/^https?:\/\/\S+$/mg) || [];
         chrome.storage.sync.set({ignore_urls: matches});
     });
 

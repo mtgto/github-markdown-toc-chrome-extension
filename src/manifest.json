@@ -3,7 +3,7 @@
 
   "name": "GitHub markdown ToC",
   "description": "Generate toc of github markdown automatically.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "mtgto",
   "homepage_url": "https://github.com/mtgto/github-markdown-toc-chrome-extension",
   "icons": { "128": "icon_128.png" },

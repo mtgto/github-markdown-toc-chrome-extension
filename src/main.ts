@@ -30,8 +30,8 @@ chrome.storage.sync.get(function(items) {
         .each(function(index: number, element: Element) {
             var tagName: string = element.tagName;
             var text: string = element.textContent.trim();
-            var href: string = $(element).children('a.anchor').first().attr('href');
-            if (!href) {
+            var anchorId: string = $(element).children('a.anchor').first().attr('id');
+            if (!anchorId) {
                 return;
             }
             var level: number = parseInt(tagName.charAt(1));
@@ -50,7 +50,7 @@ chrome.storage.sync.get(function(items) {
             var item: JQuery = $('<li/>');
             var anchor: JQuery = $('<a/>');
             anchor.text(text);
-            anchor.attr('href', href);
+            anchor.attr('href', '#' + anchorId);
             item.append(anchor);
             list.append(item);
         });
